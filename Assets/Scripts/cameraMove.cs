@@ -11,7 +11,7 @@ public class cameraMove : MonoBehaviour
     private Transform _t;
     private Rigidbody2D _playerRB;
     private float _xdif;
-    private float _ydif;    
+    private float _ydif;
     private float _speed;
     // Start is called before the first frame update
     void Start()
@@ -27,8 +27,12 @@ public class cameraMove : MonoBehaviour
     {
         _xdif = camera.transform.position.x - _t.position.x;
         _ydif = camera.transform.position.y - _t.position.y;
-        if((Mathf.Abs(_xdif) > xbounds && _playerRB.velocity.x > 0) || Mathf.Abs(_ydif) > ybounds){
+        if(Mathf.Abs(_xdif) > xbounds){
+            if(_xdif > xbounds)
+            
             _rb.velocity = _playerRB.velocity;
+        }else if(Mathf.Abs(_ydif) > ybounds) {
+            
         }else{
             _rb.velocity = new Vector2(0f, 0f);
         }
