@@ -12,11 +12,14 @@ public class WhaleController : MonoBehaviour
 
     public bool isUnderwater = false;
 
-    private float visibility = 1.0f;
-    private float minVisibility = 0.3f;
 
     private bool isRight = true;
+    private float maxSize;
+    private float minSize;
 
+
+    private float visibility = 1.0f;
+    private float minVisibility = 0.0f;
     private void setVisibilityFromTarget(float target)
     {
         if (visibility < target)
@@ -36,8 +39,8 @@ public class WhaleController : MonoBehaviour
 
         rigidBody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-
-
+        maxSize = transform.localScale.x;
+        minSize = maxSize * 0.9f;
     }
 
     // Update is called once per frame
@@ -55,23 +58,26 @@ public class WhaleController : MonoBehaviour
         if (isUnderwater)
         {
             setVisibilityFromTarget(minVisibility);
-            transform.Translate(Vector3.down * Time.deltaTime * (visibility - minVisibility) * 10.0f);
+            transform.Translate(Vector3.down * Time.deltaTime * (visibility - minVisibility) * 5.0f);
+
+            float size = Mathf.Max(minSize, transform.localScale.x * (1 - Time.deltaTime));
+            transform.localScale = new Vector3(size, size, size);
+
         }
         else
         {
             setVisibilityFromTarget(1.0f);
-            transform.Translate(Vector3.up * Time.deltaTime * (1.0f - visibility) * 10.0f);
+            transform.Translate(Vector3.up * Time.deltaTime * (1.0f - visibility) * 5.0f);
+
+            float size = Mathf.Min(maxSize, transform.localScale.x * (1 + Time.deltaTime));
+            transform.localScale = new Vector3(size, size, size);
+
         }
+
         spriteRenderer.color = new Color(visibility, visibility, visibility, visibility);
 
         float moveHorizontal = Input.GetAxis("Horizontal");
-
         float moveVertical = Input.GetAxis("Vertical");
-
-        // spriteRenderer.sprite.uv = Vector2.dow
-
-
-        // Vector2 movement = new Vector2(moveHorizontal, moveVertical);
 
 
         rigidBody.velocity = new Vector2(moveHorizontal * speed, moveVertical * speed);
