@@ -11,6 +11,7 @@ public class Bear : MonoBehaviour
     private float stop_delay;
     private float direction;
     private int speed;
+    private float center;
     private bool fallen;
 
     // Start is called before the first frame update
@@ -19,22 +20,34 @@ public class Bear : MonoBehaviour
         action_delay = 2;
         stop_delay = 0;
         direction = 0;
-        speed = 1;
+        speed = 2;
         fallen = false;
         Event_Manager.Distraction += bear_distracted;
+        Event_Manager.Tilt += bear_sliding;
+        center = 0.75f;
     }
 
     public void OnDestroy()
     {
         Event_Manager.Distraction -= bear_distracted;
+        Event_Manager.Tilt -= bear_sliding;
     }
 
-        void bear_distracted(float x, float y)
+    void bear_distracted(float x, float y)
     {
-        print("distracted");
+        //print("distracted");
         action_delay = 2.5f;
         stop_delay = 1.0f;
         direction = Mathf.Atan2(this.transform.position.y - y, this.transform.position.x - x) + Mathf.PI;
+    }
+
+    void bear_sliding(float x, float y)
+    {
+        //action_delay = 1.0f;
+        //stop_delay = 0;
+        float slide_dir = Mathf.Atan2(this.transform.position.y - y, this.transform.position.x - x) + Mathf.PI;
+        this.transform.Translate(new Vector3(speed/4f * Time.deltaTime * Mathf.Cos(slide_dir), speed/2f * Time.deltaTime * Mathf.Sin(slide_dir)));
+        //this.transform.Translate(new Vector3(x * Time.deltaTime, y * Time.deltaTime));
     }
 
     // Update is called once per frame
@@ -45,7 +58,7 @@ public class Bear : MonoBehaviour
         if (action_delay <= 0)
         {
             float theta = Mathf.Atan2(this.transform.position.y, this.transform.position.x) + Mathf.PI;
-            if (float.IsNaN(theta) || displacement < 1) {
+            if (float.IsNaN(theta) || displacement < center*center) {
                 direction = Random.Range(0, 2 * Mathf.PI);
             }
             else
