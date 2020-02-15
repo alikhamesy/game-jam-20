@@ -45,6 +45,7 @@ public class Bear : MonoBehaviour
     {
         //action_delay = 1.0f;
         //stop_delay = 0;
+        if (fallen) { return; }
         float slide_dir = Mathf.Atan2(this.transform.position.y - y, this.transform.position.x - x) + Mathf.PI;
         this.transform.Translate(new Vector3(speed/4f * Time.deltaTime * Mathf.Cos(slide_dir), speed/2f * Time.deltaTime * Mathf.Sin(slide_dir)));
         //this.transform.Translate(new Vector3(x * Time.deltaTime, y * Time.deltaTime));

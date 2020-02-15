@@ -35,7 +35,7 @@ public class Event_Manager : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             var world_coord = Input.mousePosition;
-            world_coord.z = 0;
+            world_coord.z = 10;
             world_coord = Camera.main.ScreenToWorldPoint(world_coord);
             Tilt(world_coord.x, world_coord.y);
         }
