@@ -41,3 +41,24 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 3151960251
+    locked: 0
+  - name: UnderWater
+    uniqueID: 3608190991
+    locked: 0
+  - name: Water
+    uniqueID: 194767869
+    locked: 0
+  - name: AboveWater
+    uniqueID: 2775392935
+    locked: 0
+  - name: Land
+    uniqueID: 3316413229
+    locked: 0
+  - name: Ships
+    uniqueID: 183680703
+    locked: 0
+  - name: Polar Bears
+    uniqueID: 277384047
+    locked: 0
