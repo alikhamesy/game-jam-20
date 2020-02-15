@@ -24,34 +24,40 @@ public class Bear : MonoBehaviour
         Event_Manager.Distraction += bear_distracted;
     }
 
-    void bear_distracted(float x, float y)
+    public void OnDestroy()
+    {
+        Event_Manager.Distraction -= bear_distracted;
+    }
+
+        void bear_distracted(float x, float y)
     {
         print("distracted");
-        action_delay = 2.0f;
-        stop_delay = 2.0f;
+        action_delay = 2.5f;
+        stop_delay = 1.0f;
         direction = Mathf.Atan2(this.transform.position.y - y, this.transform.position.x - x) + Mathf.PI;
     }
 
     // Update is called once per frame
     void Update()
     {
+        float displacement = (Mathf.Pow(this.transform.position.x, 2) + Mathf.Pow(this.transform.position.y, 2));
         action_delay -= Time.deltaTime;
         if (action_delay <= 0)
         {
             float theta = Mathf.Atan2(this.transform.position.y, this.transform.position.x) + Mathf.PI;
-            if (float.IsNaN(theta)) {
+            if (float.IsNaN(theta) || displacement < 1) {
                 direction = Random.Range(0, 2 * Mathf.PI);
             }
             else
             {
-                direction = Random.Range(theta - Mathf.PI / 4, theta + Mathf.PI / 4 );
+                direction = Random.Range(theta - Mathf.PI / 2, theta + Mathf.PI / 2 );
             }
             action_delay = Random.Range(1.5f, 3.0f);
             stop_delay = Random.Range(0.1f, 0.5f);
         }
 
 
-        if ((Mathf.Pow(this.transform.position.x, 2) + Mathf.Pow(this.transform.position.y, 2)) > 4 * 4)
+        if (displacement > 2 * 2)
         {
             stop_delay = 0;
             this.transform.Rotate(new Vector3(0, 0, 0.5f));
