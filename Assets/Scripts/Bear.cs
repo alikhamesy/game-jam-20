@@ -12,7 +12,7 @@ public class Bear : MonoBehaviour
     private float direction;
     private int speed;
     private float center;
-    private bool fallen;
+    private float fallen;
 
     // Start is called before the first frame update
     void Start()
@@ -21,7 +21,7 @@ public class Bear : MonoBehaviour
         stop_delay = 0;
         direction = 0;
         speed = 2;
-        fallen = false;
+        fallen = 10f;
         Event_Manager.Distraction += bear_distracted;
         Event_Manager.Tilt += bear_sliding;
         center = 0.75f;
@@ -38,6 +38,7 @@ public class Bear : MonoBehaviour
         //print("distracted");
         action_delay = 2.5f;
         stop_delay = 1.0f;
+        speed = 1;
         direction = Mathf.Atan2(this.transform.position.y - y, this.transform.position.x - x) + Mathf.PI;
     }
 
@@ -45,7 +46,7 @@ public class Bear : MonoBehaviour
     {
         //action_delay = 1.0f;
         //stop_delay = 0;
-        if (fallen) { return; }
+        if (fallen!=10f) { return; }
         float slide_dir = Mathf.Atan2(this.transform.position.y - y, this.transform.position.x - x) + Mathf.PI;
         this.transform.Translate(new Vector3(speed/4f * Time.deltaTime * Mathf.Cos(slide_dir), speed/2f * Time.deltaTime * Mathf.Sin(slide_dir)));
         //this.transform.Translate(new Vector3(x * Time.deltaTime, y * Time.deltaTime));
@@ -68,6 +69,8 @@ public class Bear : MonoBehaviour
             }
             action_delay = Random.Range(1.5f, 3.0f);
             stop_delay = Random.Range(0.1f, 0.5f);
+
+            speed = 2;
         }
 
 
@@ -75,7 +78,16 @@ public class Bear : MonoBehaviour
         {
             stop_delay = 0;
             this.transform.Rotate(new Vector3(0, 0, 0.5f));
-            fallen = true;
+            fallen -= Time.deltaTime;
+        }
+        else
+        {
+            fallen = 10f;
+        }
+
+        if (fallen < 0)
+        {
+            Destroy(this.gameObject);
         }
 
         if (stop_delay > 0)
