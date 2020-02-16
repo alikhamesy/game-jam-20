@@ -25,11 +25,8 @@ public class cameraMove : MonoBehaviour
     {
         _xdif = _t.position.x - camera.transform.position.x;
         _ydif = _t.position.y - camera.transform.position.y;
-        Debug.Log(Mathf.Abs(_xdif) > xbounds);
-        Debug.Log(Mathf.Abs(_ydif) > ybounds);
         if((Mathf.Abs(_xdif) > xbounds && ((_xdif > 0 && _playerRB.velocity.x > 0) || (_xdif < 0 && _playerRB.velocity.x < 0)))
           || (Mathf.Abs(_ydif) > ybounds && ((_ydif > 0 && _playerRB.velocity.y > 0) || (_ydif < 0 && _playerRB.velocity.y < 0)))){
-            Debug.Log(_playerRB.velocity);
             _rb.velocity = _playerRB.velocity;
         }else{
             _rb.velocity = new Vector2(0f, 0f);
