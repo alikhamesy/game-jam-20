@@ -14,6 +14,9 @@ public class BoatCollider : MonoBehaviour
                 Destroy(col.gameObject);
                 Destroy(gameObject);
                 break;
+            case "Land":
+                Destroy(gameObject);
+                break;
             case "Boat":
                 Destroy(col.gameObject);
                 break;
