@@ -12,13 +12,11 @@ public class cameraMove : MonoBehaviour
     private Rigidbody2D _playerRB;
     private float _xdif;
     private float _ydif;
-    private float _speed;
     // Start is called before the first frame update
     void Start()
     {
         _t = GetComponent<Transform>();
         _rb = camera.GetComponent<Rigidbody2D>();
-        _speed = GetComponent<move>().speed;
         _playerRB = GetComponent<Rigidbody2D>();
     }
 
