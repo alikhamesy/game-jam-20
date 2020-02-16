@@ -5,58 +5,36 @@ using UnityEngine.AI;
 public class BoatMove : MonoBehaviour
 {
     float speed=3;
-    private Vector2 screenBounds;
+    public float[] xAxis;
+    public float[] yAxis;
     float x;
     float y;
-    float[] xAxis;
-    float[] yAxis;
-
     float check;
-   
-
 
     void Start()
     {
-        screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
-        
-        xAxis = new float[] { screenBounds.x, -screenBounds.x };
-        yAxis = new float[] { screenBounds.y, -screenBounds.y };
+        xAxis = new float[]{-100f, 100f};
+        yAxis = new float[]{-100f, 100f};
 
         check = Mathf.Round(Random.value);
-        Debug.Log("check " + check);
 
-        if (check== 1){
-            x = Random.Range(-screenBounds.x, screenBounds.x);
+        if (check == 1){
+            x = Random.Range(-100f, 100f);
+            y = yAxis[(int)((Mathf.Round(Random.value)))];
             Debug.Log("x was chosen its "+x);
         }
         else{
-            y = Random.Range(-screenBounds.y, screenBounds.y);
+            y = Random.Range(-100f, 100f);
+            x = xAxis[(int)((Mathf.Round(Random.value)))];
             Debug.Log("y was chosen its " + y);
         }
-
-        if (check == 1)
-        {
-            y = yAxis[(int)((Mathf.Round(Random.value)))];
-        }
-        else
-        {
-            x = xAxis[(int)((Mathf.Round(Random.value)))];
-        }
-
-
-       
-        
-
     }
- private void Update()
+    private void Update()
     {
-
         float step =  speed * Time.deltaTime;
-
-
         transform.position = Vector3.MoveTowards(this.transform.position, new Vector3(x,y,0f), step);
-
-        
-
+        if(Mathf.Abs(transform.position.x) > 100f || Mathf.Abs(transform.position.y) > 100f){
+            Object.Destroy(gameObject);
+        }
     }
 }

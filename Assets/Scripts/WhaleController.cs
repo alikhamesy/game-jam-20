@@ -10,14 +10,9 @@ public class WhaleController : MonoBehaviour
     private Rigidbody2D rigidBody;
     private SpriteRenderer spriteRenderer;
     private PolygonCollider2D collider;
-
     public bool isUnderwater = false;
-
-
-    private bool isRight = true;
     private float maxSize;
     private float minSize;
-
 
     private float visibility = 1.0f;
     private float minVisibility = 0.3f;
