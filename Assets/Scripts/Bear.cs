@@ -81,6 +81,7 @@ public class Bear : MonoBehaviour
         if (displacement > 1.7)
         {
             fallen = true;
+            this.transform.parent = null;
             stop_delay = 0;
             this.transform.Rotate(new Vector3(0, 0, 0.5f));
         }
