@@ -31,7 +31,7 @@ public class Bear : MonoBehaviour
 
     void Start()
     {
-        fallDelay = 15f;
+        fallDelay = 5f;
         action_delay = 2;
         stopDelay = 0;
         direction = 0;
@@ -112,7 +112,7 @@ public class Bear : MonoBehaviour
         if ( bearCollider.Distance(iceCollider).distance < 0 )
         {
             fallen = false;
-            fallDelay = 15;    
+            fallDelay = 5f; 
             rigidBody.velocity = iceCollider.attachedRigidbody.velocity;
             //this.transform.parent = iceCollider.transform.parent;
         }
@@ -129,7 +129,7 @@ public class Bear : MonoBehaviour
             else if( !whaleUnderwater && canRescue )
             {
                 onWhale = true;
-                fallDelay = 15;
+                fallDelay = 5f;
                 stopDelay = 0;
                 rigidBody.velocity = whaleCollider.attachedRigidbody.velocity;
                 
@@ -168,7 +168,7 @@ public class Bear : MonoBehaviour
         {
             stopDelay = 0;
             //print(fallDelay);
-            if (fallDelay == 15f)
+            if (fallDelay == 5f)
             {
                 /*splash.transform.position = transform.position;
                 splash.Play();*/
@@ -182,17 +182,17 @@ public class Bear : MonoBehaviour
                 Destroy(this.gameObject);
             }
         }
-        else if (fallDelay < 15f)
+        else if (fallDelay < 5f)
         {
             fallDelay += 5 * Time.deltaTime;
-            if (fallDelay > 15f)
+            if (fallDelay > 5f)
             {
-                fallDelay = 15f;
+                fallDelay = 5f;
             }
         }/*
         else
         {
-            fallDelay = 15f;
+            fallDelay = 5f;
         }*/
 
         if (stopDelay > 0)
@@ -215,6 +215,7 @@ public class Bear : MonoBehaviour
                 animator.SetFloat("Horizontal", Mathf.Cos(direction) < 0 ? -1 : 1);
                 animator.SetFloat("Speed", 1f);
             }else{
+                Debug.Log("test");
                 animator.SetFloat("Speed", 0);
                 animator.SetFloat("Horizontal", 0);
             }
@@ -227,6 +228,6 @@ public class Bear : MonoBehaviour
             }         
             this.transform.Translate(speed*Time.deltaTime*(this.transform.parent.position - this.transform.position));
         }
-        //bearRenderer.color = new Color(fallDelay / 15, fallDelay / 15, fallDelay / 15, fallDelay / 15);
+        //bearRenderer.color = new Color(fallDelay / 5f, fallDelay / 5f, fallDelay / 5f, fallDelay / 5f);
     }
 }

@@ -8,7 +8,7 @@ public class IceCollider : MonoBehaviour
     private int lives = 5;
     
     void Update(){
-        if(lives <= 0){
+        if(lives <= 0 || transform.childCount <= 0){
             SceneManager.LoadScene("Lose");
         }
     }
