@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class IceCollider : MonoBehaviour
 {
+    public GameObject livesDisplay;
     private int lives = 5;
     
     void Update(){
@@ -33,7 +34,7 @@ public class IceCollider : MonoBehaviour
                 SceneManager.LoadScene("Win");
                 break;
             case "Boat":
-                lives--;
+                livesDisplay.GetComponent<LivesTracker>().decrease(lives--);
                 gameObject.transform.localScale *= 0.9f;
                 break;
         }
