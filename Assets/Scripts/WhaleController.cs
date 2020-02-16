@@ -43,8 +43,8 @@ public class WhaleController : MonoBehaviour
 
         rigidBody.velocity = new Vector2(xMovement * speed, yMovement * speed);
 
-        animator.SetFloat("Horizontal", moveHorizontal);
-        animator.SetFloat("Vertical", moveVertical);
+        animator.SetFloat("Horizontal", xMovement);
+        animator.SetFloat("Vertical", yMovement);
         animator.SetFloat("Speed", Vector2.SqrMagnitude(rigidBody.velocity));
 
         // if (rigidBody.velocity.x < 0)
