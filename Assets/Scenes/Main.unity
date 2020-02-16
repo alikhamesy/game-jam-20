@@ -663,9 +663,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9baff4b0121e97144bfda03b965f012e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 1319065681}
-  xbounds: 8
-  ybounds: 6
+  myCamera: {fileID: 1319065683}
+  xBounds: 8
+  yBounds: 6
 --- !u!58 &2005200022
 CircleCollider2D:
   m_ObjectHideFlags: 0
