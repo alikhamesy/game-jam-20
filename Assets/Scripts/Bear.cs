@@ -4,27 +4,37 @@ using UnityEngine;
 
 public class Bear : MonoBehaviour
 {
-    // Variable declarations
-    private float x;
-    private float y;
     private float action_delay;
-    private float stop_delay;
+    public float stopDelay;
     private float direction;
     private int speed;
     private float center;
-    private bool fallen;
+    public bool fallen;
 
-    // Start is called before the first frame update
+    public ParticleSystem splash;
+
+    public CircleCollider2D whaleCollider;
+
+    public float fallDelay = 15.0f;
+    private SpriteRenderer bearRenderer;
+
+    private CircleCollider2D bearCollider;
+    private PolygonCollider2D iceCollider;
+
     void Start()
     {
         action_delay = 2;
-        stop_delay = 0;
+        stopDelay = 0;
         direction = 0;
         speed = 2;
-        fallen = false;
         Event_Manager.Distraction += bear_distracted;
         Event_Manager.Tilt += bear_sliding;
         center = 0.75f;
+        fallen = false;
+        bearRenderer = GetComponent<SpriteRenderer>();
+
+        bearCollider = GetComponent<CircleCollider2D>();
+        iceCollider = GetComponentInParent<PolygonCollider2D>();
     }
 
     public void OnDestroy()
@@ -37,7 +47,8 @@ public class Bear : MonoBehaviour
     {
         //print("distracted");
         action_delay = 2.5f;
-        stop_delay = 1.0f;
+        stopDelay = 1.0f;
+        speed = 1;
         direction = Mathf.Atan2(this.transform.position.y - y, this.transform.position.x - x) + Mathf.PI;
     }
 
@@ -47,42 +58,86 @@ public class Bear : MonoBehaviour
         //stop_delay = 0;
         if (fallen) { return; }
         float slide_dir = Mathf.Atan2(this.transform.position.y - y, this.transform.position.x - x) + Mathf.PI;
-        this.transform.Translate(new Vector3(speed/4f * Time.deltaTime * Mathf.Cos(slide_dir), speed/2f * Time.deltaTime * Mathf.Sin(slide_dir)));
+        this.transform.Translate(new Vector3(speed / 4f * Time.deltaTime * Mathf.Cos(slide_dir), speed / 2f * Time.deltaTime * Mathf.Sin(slide_dir)));
         //this.transform.Translate(new Vector3(x * Time.deltaTime, y * Time.deltaTime));
     }
 
-    // Update is called once per frame
     void Update()
     {
-        float displacement = (Mathf.Pow(this.transform.position.x, 2) + Mathf.Pow(this.transform.position.y, 2));
+        float displacement = (Mathf.Pow(this.transform.position.x - 0.06f, 2) / 7.5f + Mathf.Pow(this.transform.position.y - 0.40f, 2) / 1.3f);
         action_delay -= Time.deltaTime;
         if (action_delay <= 0)
         {
             float theta = Mathf.Atan2(this.transform.position.y, this.transform.position.x) + Mathf.PI;
-            if (float.IsNaN(theta) || displacement < center*center) {
+            if (float.IsNaN(theta) || displacement < center * center)
+            {
                 direction = Random.Range(0, 2 * Mathf.PI);
             }
             else
             {
-                direction = Random.Range(theta - Mathf.PI / 2, theta + Mathf.PI / 2 );
+                direction = Random.Range(theta - Mathf.PI / 2, theta + Mathf.PI / 2);
             }
             action_delay = Random.Range(1.5f, 3.0f);
-            stop_delay = Random.Range(0.1f, 0.5f);
+            stopDelay = Random.Range(0.1f, 0.5f);
+
+            speed = 2;
         }
 
-
-        if (displacement > 2 * 2)
+        // if on ice
+        if (bearCollider.Distance(iceCollider).distance < 0)
         {
-            stop_delay = 0;
-            this.transform.Rotate(new Vector3(0, 0, 0.5f));
+            fallen = false;
+            fallDelay = 15;
+        }
+        else
+        {
             fallen = true;
+            this.transform.parent = null;
+            stopDelay = 0;
+            this.transform.Rotate(new Vector3(0, 0, 0.5f));
         }
 
-        if (stop_delay > 0)
+        // if on whale
+        if (bearCollider.Distance(whaleCollider).distance < 0)
+        {
+            fallen = false;
+            fallDelay = 15;
+            stopDelay = 0;
+        }
+
+        if (fallen)
+        {
+            if (fallDelay == 15)
+            {
+                splash.transform.position = transform.position;
+                splash.Play();
+            }
+            fallDelay -= Time.deltaTime;
+        }
+        else if (fallDelay < 10f)
+        {
+            fallDelay += 5 * Time.deltaTime;
+            if (fallDelay > 10f)
+            {
+                fallDelay = 10f;
+            }
+        }
+        else
+        {
+            fallDelay = 15;
+        }
+
+        if (fallDelay < 0)
+        {
+            Destroy(this.gameObject);
+        }
+
+        if (stopDelay > 0)
         {
             this.transform.Translate(new Vector3(speed * Time.deltaTime * Mathf.Cos(direction), speed * Time.deltaTime * Mathf.Sin(direction)));
-            stop_delay -= Time.deltaTime;
-
+            stopDelay -= Time.deltaTime;
         }
+
+        bearRenderer.color = new Color(fallDelay / 15, fallDelay / 15, fallDelay / 15, fallDelay / 15);
     }
 }
