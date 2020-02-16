@@ -1,5 +1,6 @@
 fileFormatVersion: 2
 <<<<<<< HEAD
+<<<<<<< HEAD
 guid: 0e21034b7c6c58a4eb9acc463a5b8e93
 =======
 <<<<<<< HEAD
@@ -8,6 +9,9 @@ guid: 0e21034b7c6c58a4eb9acc463a5b8e93
 guid: de47667a794dc7642bc9f3c0485f80ea
 >>>>>>> Jarrod
 >>>>>>> caleb
+=======
+guid: 56cd340dd01e8204288c69587cc91466
+>>>>>>> dev
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
