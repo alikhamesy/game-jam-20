@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Boat
+  - Ice
+  - Bear
   layers:
   - Default
   - TransparentFX
@@ -43,4 +46,7 @@ TagManager:
     locked: 0
   - name: New Layer
     uniqueID: 3289080051
+    locked: 0
+  - name: Player
+    uniqueID: 3869584341
     locked: 0

@@ -11,6 +11,8 @@ public class Bear : MonoBehaviour
     private float center;
     public bool fallen;
 
+    public ParticleSystem splash;
+
     public CircleCollider2D whaleCollider;
 
     public float fallDelay = 15.0f;
@@ -84,7 +86,7 @@ public class Bear : MonoBehaviour
         if (bearCollider.Distance(iceCollider).distance < 0)
         {
             fallen = false;
-            fallDelay = 10f;
+            fallDelay = 15;
         }
         else
         {
@@ -98,12 +100,17 @@ public class Bear : MonoBehaviour
         if (bearCollider.Distance(whaleCollider).distance < 0)
         {
             fallen = false;
-            fallDelay = 10;
+            fallDelay = 15;
             stopDelay = 0;
         }
 
         if (fallen)
         {
+            if (fallDelay == 15)
+            {
+                splash.transform.position = transform.position;
+                splash.Play();
+            }
             fallDelay -= Time.deltaTime;
         }
         else if (fallDelay < 10f)
