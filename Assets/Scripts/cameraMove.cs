@@ -18,7 +18,7 @@ public class cameraMove : MonoBehaviour
     {
         _t = GetComponent<Transform>();
         _rb = camera.GetComponent<Rigidbody2D>();
-        _speed = GetComponent<move>().speed;
+        _speed = GetComponent<WhaleController>().speed;
         _playerRB = GetComponent<Rigidbody2D>();
     }
 
