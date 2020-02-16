@@ -7,6 +7,7 @@ TagManager:
   - Boat
   - Ice
   - Bear
+  - Land
   layers:
   - Default
   - TransparentFX
@@ -49,4 +50,10 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 3869584341
+    locked: 0
+  - name: Bears
+    uniqueID: 885858171
+    locked: 0
+  - name: UI
+    uniqueID: 3962267715
     locked: 0

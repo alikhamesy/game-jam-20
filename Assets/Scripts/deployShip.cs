@@ -6,6 +6,7 @@ public class deployShip : MonoBehaviour
 {
     public GameObject BoatPrefab;
     public GameObject Player;
+    public GameObject Land;
     public float radius = 20f;
     public float respawnTime = 5.0f;
     public float speed = 3f;
@@ -27,6 +28,8 @@ public class deployShip : MonoBehaviour
     void Start()
     {
         StartCoroutine(asteroidWave());
+        Vector2 landStart = new Vector2(Mathf.Round(Random.value) == 1 ? 100f: -100f, Mathf.Round(Random.value) == 1 ? 100f: -100f);
+        Instantiate(Land).transform.position = landStart;
     }
 
     private Vector2 randVelocity(float min, float max){

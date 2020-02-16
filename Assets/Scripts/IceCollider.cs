@@ -1,10 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class IceCollider : MonoBehaviour
 {
-
+    private int lives = 5;
+    
+    void Update(){
+        if(lives <= 0){
+            SceneManager.LoadScene("Lose");
+        }
+    }
+    
     public void bump(Vector2 velocity){
         StartCoroutine(bumpBears(velocity));
     }
@@ -20,8 +28,14 @@ public class IceCollider : MonoBehaviour
         }
     }
     void OnCollisionEnter2D(Collision2D col){
-        if(col.gameObject.tag == "Land"){
-            //win
+        switch(col.gameObject.tag){
+            case "Land":
+                SceneManager.LoadScene("Win");
+                break;
+            case "Boat":
+                lives--;
+                gameObject.transform.localScale *= 0.9f;
+                break;
         }
     }
 }
