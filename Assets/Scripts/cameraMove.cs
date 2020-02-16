@@ -6,7 +6,7 @@ public class cameraMove : MonoBehaviour
 {
     public Camera myCamera;
     public float xBounds = 8f;
-    public float yBounds = 6f;
+    public float yBounds = 4f;
 
     private Rigidbody2D cameraRigidBody;
     private Rigidbody2D playerRigidBody;
