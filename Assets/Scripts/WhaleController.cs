@@ -19,7 +19,7 @@ public class WhaleController : MonoBehaviour
 
 
     private float visibility = 1.0f;
-    private float minVisibility = 0.0f;
+    private float minVisibility = 0.3f;
     private void setVisibilityFromTarget(float target)
     {
         if (visibility < target)
@@ -58,7 +58,7 @@ public class WhaleController : MonoBehaviour
         if (isUnderwater)
         {
             setVisibilityFromTarget(minVisibility);
-            transform.Translate(Vector3.down * Time.deltaTime * (visibility - minVisibility) * 5.0f);
+            transform.Translate(Vector3.down * Time.deltaTime * (visibility - minVisibility) * 3.0f);
 
             float size = Mathf.Max(minSize, transform.localScale.x * (1 - Time.deltaTime));
             transform.localScale = new Vector3(size, size, size);
@@ -67,7 +67,7 @@ public class WhaleController : MonoBehaviour
         else
         {
             setVisibilityFromTarget(1.0f);
-            transform.Translate(Vector3.up * Time.deltaTime * (1.0f - visibility) * 5.0f);
+            transform.Translate(Vector3.up * Time.deltaTime * (1.0f - visibility) * 3.0f);
 
             float size = Mathf.Min(maxSize, transform.localScale.x * (1 + Time.deltaTime));
             transform.localScale = new Vector3(size, size, size);
@@ -76,12 +76,12 @@ public class WhaleController : MonoBehaviour
 
         spriteRenderer.color = new Color(visibility, visibility, visibility, visibility);
 
+
+        // movement
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
 
-
         rigidBody.velocity = new Vector2(moveHorizontal * speed, moveVertical * speed);
-        //rb2d.AddForce(movement * speed);
 
         if (rigidBody.velocity.x < 0)
         {
