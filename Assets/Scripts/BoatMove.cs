@@ -12,9 +12,9 @@ public class BoatMove : MonoBehaviour
     private void Update()
     {
         if(Mathf.Abs(transform.position.x - Player.transform.position.x) > radius+2 
-        || Mathf.Abs(transform.position.x) > 99 
+        || Mathf.Abs(transform.position.x) > 49 
         || Mathf.Abs(transform.position.y - Player.transform.position.y) > radius+2
-        || Mathf.Abs(transform.position.y) > 99){
+        || Mathf.Abs(transform.position.y) > 49){
             Object.Destroy(gameObject);
         }
     }
