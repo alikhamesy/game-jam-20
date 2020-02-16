@@ -135,7 +135,6 @@ public class Bear : MonoBehaviour
             else if( !whaleUnderwater && canRescue )
             {
                 isHeld = em.change_holding_bear(this.gameObject, true);
-                print(isHeld);
                 if(isHeld){
                     onWhale = true;
                     fallDelay = 15;
@@ -231,9 +230,7 @@ public class Bear : MonoBehaviour
             this.transform.Translate(speed*Time.deltaTime*(this.transform.parent.position - this.transform.position));
         }
         //bearRenderer.color = new Color(fallDelay / 15, fallDelay / 15, fallDelay / 15, fallDelay / 15);
-        print(isHeld);
         if(!onWhale){            
-            print("off whale");
             isHeld = em.change_holding_bear(this.gameObject, false);
         }
     }

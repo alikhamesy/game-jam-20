@@ -9,6 +9,7 @@ public class Event_Manager : MonoBehaviour
     public static event BearHandler Distraction;
     public static event BearHandler Tilt;
     private float timer;
+    private float end_timer;
 
     public delegate void WhaleHandler(bool whale_state);
     public static event WhaleHandler Underwater;
@@ -60,6 +61,7 @@ public class Event_Manager : MonoBehaviour
     void Start()
     {
         timer = 30.0f;
+        end_timer = 6f*5f;
         held_bear = null;
     }
 
@@ -67,6 +69,7 @@ public class Event_Manager : MonoBehaviour
     void Update()
     {
         timer -= Time.deltaTime;
+        end_timer -= Time.deltaTime;
         if (timer <= 0 ) { 
             float x = Random.Range(0, 10);
             float y = Random.Range(0, 10);
@@ -79,6 +82,10 @@ public class Event_Manager : MonoBehaviour
             world_coord.z = 10;
             world_coord = Camera.main.ScreenToWorldPoint(world_coord);
             Tilt(world_coord.x, world_coord.y);
+        }
+        
+        if (end_timer < 0f){
+            //print("ggs");
         }
     }
 }
