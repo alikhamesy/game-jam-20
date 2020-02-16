@@ -7,12 +7,14 @@ public class WhaleController : MonoBehaviour
     // Start is called before the first frame update
     public float speed = 10f;
     public Animator animator;
+    public Event_Manager em;
     private Rigidbody2D rigidBody;
     private SpriteRenderer spriteRenderer;
     private CapsuleCollider2D whaleCollider;
     private Submerger submerger;
 
     public bool isUnderwater = false;
+    public bool hasBear = false;
 
     void Start()
     {
@@ -27,13 +29,15 @@ public class WhaleController : MonoBehaviour
         if (Input.GetButton("Jump"))
         {
             isUnderwater = true;
-            whaleCollider.enabled = false;
+            em.change_whale_state(isUnderwater);
+            whaleCollider.isTrigger = true;
             submerger.targetDepth = 0.3f;
         }
         else
         {
             isUnderwater = false;
-            whaleCollider.enabled = true;
+            em.change_whale_state(isUnderwater);
+            whaleCollider.isTrigger = false;
             submerger.targetDepth = 1.0f;
         }
 
