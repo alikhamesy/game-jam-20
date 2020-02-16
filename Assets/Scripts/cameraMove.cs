@@ -23,16 +23,16 @@ public class cameraMove : MonoBehaviour
     }
 
     // Update is called once per frame
-    void LateUpdate()
+    void FixedUpdate()
     {
-        _xdif = camera.transform.position.x - _t.position.x;
-        _ydif = camera.transform.position.y - _t.position.y;
-        if(Mathf.Abs(_xdif) > xbounds){
-            if(_xdif > xbounds)
-            
+        _xdif = _t.position.x - camera.transform.position.x;
+        _ydif = _t.position.y - camera.transform.position.y;
+        Debug.Log(Mathf.Abs(_xdif) > xbounds);
+        Debug.Log(Mathf.Abs(_ydif) > ybounds);
+        if((Mathf.Abs(_xdif) > xbounds && ((_xdif > 0 && _playerRB.velocity.x > 0) || (_xdif < 0 && _playerRB.velocity.x < 0)))
+          || (Mathf.Abs(_ydif) > ybounds && ((_ydif > 0 && _playerRB.velocity.y > 0) || (_ydif < 0 && _playerRB.velocity.y < 0)))){
+            Debug.Log(_playerRB.velocity);
             _rb.velocity = _playerRB.velocity;
-        }else if(Mathf.Abs(_ydif) > ybounds) {
-            
         }else{
             _rb.velocity = new Vector2(0f, 0f);
         }
