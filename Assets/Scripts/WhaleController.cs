@@ -6,10 +6,10 @@ public class WhaleController : MonoBehaviour
 {
     // Start is called before the first frame update
     public float speed = 10f;
-
+    public Animator animator;
     private Rigidbody2D rigidBody;
     private SpriteRenderer spriteRenderer;
-    private CircleCollider2D collider;
+    private PolygonCollider2D collider;
 
     public bool isUnderwater = false;
 
@@ -37,7 +37,7 @@ public class WhaleController : MonoBehaviour
 
     void Start()
     {
-        collider = GetComponent<CircleCollider2D>();
+        collider = GetComponent<PolygonCollider2D>();
         rigidBody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         maxSize = transform.localScale.x;
@@ -87,13 +87,17 @@ public class WhaleController : MonoBehaviour
 
         rigidBody.velocity = new Vector2(moveHorizontal * speed, moveVertical * speed);
 
-        if (rigidBody.velocity.x < 0)
-        {
-            spriteRenderer.flipX = true;
-        }
-        else if (0 < rigidBody.velocity.x)
-        {
-            spriteRenderer.flipX = false;
-        }
+        animator.SetFloat("Horizontal", moveHorizontal);
+        animator.SetFloat("Vertical", moveVertical);
+        animator.SetFloat("Speed", Vector2.SqrMagnitude(rigidBody.velocity));
+
+        // if (rigidBody.velocity.x < 0)
+        // {
+        //     spriteRenderer.flipX = true;
+        // }
+        // else if (0 < rigidBody.velocity.x)
+        // {
+        //     spriteRenderer.flipX = false;
+        // }
     }
 }
