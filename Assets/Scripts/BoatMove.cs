@@ -4,36 +4,21 @@ using UnityEngine;
 using UnityEngine.AI;
 public class BoatMove : MonoBehaviour
 {
-    float speed=3;
+    public float speed=3;
+    public GameObject Player;
+    public float radius = 20f;
     public float[] xAxis;
     public float[] yAxis;
     float x;
     float y;
     float check;
 
-    void Start()
-    {
-        xAxis = new float[]{-100f, 100f};
-        yAxis = new float[]{-100f, 100f};
-
-        check = Mathf.Round(Random.value);
-
-        if (check == 1){
-            x = Random.Range(-100f, 100f);
-            y = yAxis[(int)((Mathf.Round(Random.value)))];
-            Debug.Log("x was chosen its "+x);
-        }
-        else{
-            y = Random.Range(-100f, 100f);
-            x = xAxis[(int)((Mathf.Round(Random.value)))];
-            Debug.Log("y was chosen its " + y);
-        }
+    void Start(){
     }
     private void Update()
     {
-        float step =  speed * Time.deltaTime;
-        transform.position = Vector3.MoveTowards(this.transform.position, new Vector3(x,y,0f), step);
-        if(Mathf.Abs(transform.position.x) > 100f || Mathf.Abs(transform.position.y) > 100f){
+        if(Mathf.Abs(transform.position.x - Player.transform.position.x) > radius+2 
+        || Mathf.Abs(transform.position.y - Player.transform.position.y) > radius+2){
             Object.Destroy(gameObject);
         }
     }
