@@ -59,7 +59,7 @@ public class Bear : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float displacement = (Mathf.Pow(this.transform.position.x, 2) + Mathf.Pow(this.transform.position.y, 2));
+        float displacement = (Mathf.Pow(this.transform.position.x - 0.23f, 2)/13 + Mathf.Pow(this.transform.position.y-0.39f, 2)/2.6f);
         action_delay -= Time.deltaTime;
         if (action_delay <= 0)
         {
@@ -78,7 +78,7 @@ public class Bear : MonoBehaviour
         }
 
 
-        if (displacement > 2 * 2)
+        if (displacement > 1.7)
         {
             fallen = true;
             stop_delay = 0;
