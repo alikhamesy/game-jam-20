@@ -13,6 +13,10 @@ public class Event_Manager : MonoBehaviour
     public delegate void WhaleHandler(bool whale_state);
     public static event WhaleHandler Underwater;
 
+    //public delegate void HoldingHandler(GameObject bear, bool holding);
+    public GameObject held_bear;
+    //public static event HoldingHandler HasBear;
+
     void add_distraction(float x, float y)
     {
         //print("Get distracted");
@@ -27,11 +31,36 @@ public class Event_Manager : MonoBehaviour
             Underwater(whale_state);
         }
     }
+
+    public bool get_holding_bear(GameObject bear){
+        return (held_bear == bear);
+    }
+
+    public bool change_holding_bear(GameObject bear, bool holding){
+        if ( holding ){
+            if ( held_bear == null ){
+                held_bear = bear;
+            }
+            if( held_bear == bear ){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            if( held_bear == bear) {
+                held_bear = null;
+            }
+            return false;
+        }
+    }
     
     // Start is called before the first frame update
     void Start()
     {
         timer = 30.0f;
+        held_bear = null;
     }
 
     // Update is called once per frame

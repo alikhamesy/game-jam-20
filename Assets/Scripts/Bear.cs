@@ -13,10 +13,12 @@ public class Bear : MonoBehaviour
     public bool onWhale;
     public bool canRescue;
     public bool toCenter;
+    public bool isHeld;
 
     public ParticleSystem splash;
     private SpriteRenderer spriteRenderer;
     private Submerger submerger;
+    public Event_Manager em;
 
     public CapsuleCollider2D whaleCollider;
     private bool whaleUnderwater;
@@ -39,12 +41,14 @@ public class Bear : MonoBehaviour
         Event_Manager.Distraction += bear_distracted;
         Event_Manager.Tilt += bear_sliding;
         Event_Manager.Underwater += get_whale_state;
+        //Event_Manager.HasBear += get_holding;
         center = 1f;
         fallen = false;
         whaleUnderwater = false;
         onWhale = false;
         canRescue = false;
         toCenter = false;
+        isHeld = false;
         //bearRenderer = GetComponent<SpriteRenderer>();
         bearCollider = GetComponent<CapsuleCollider2D>();
         rigidBody = GetComponent<Rigidbody2D>();
@@ -59,6 +63,8 @@ public class Bear : MonoBehaviour
         Event_Manager.Distraction -= bear_distracted;
         Event_Manager.Tilt -= bear_sliding;
         Event_Manager.Underwater -= get_whale_state;
+        //Event_Manager.HasBear -= get_holding;
+        em.change_holding_bear(this.gameObject, false);
     }
 
     void bear_distracted(float x, float y)
@@ -87,6 +93,7 @@ public class Bear : MonoBehaviour
 
     void Update()
     {
+        isHeld = em.get_holding_bear(gameObject);
         float displacement = (Mathf.Pow(this.transform.localPosition.x, 2)/7.5f + Mathf.Pow(this.transform.localPosition.y, 2)/1.0f);
         action_delay -= Time.deltaTime;
         if (action_delay <= 0)
@@ -108,7 +115,7 @@ public class Bear : MonoBehaviour
         //print(bearCollider.Distance(whaleCollider).distance);
 
         // if on ice
-        if ( bearCollider.Distance(iceCollider).distance < 0 )
+        if ( bearCollider.Distance(iceCollider).distance < 0 && (!fallen || toCenter))
         {
             fallen = false;
             fallDelay = 15;    
@@ -127,13 +134,17 @@ public class Bear : MonoBehaviour
             }
             else if( !whaleUnderwater && canRescue )
             {
-                onWhale = true;
-                fallDelay = 15;
-                stopDelay = 0;
-                rigidBody.velocity = whaleCollider.attachedRigidbody.velocity;
-                
-                submerger.submergeTime = 0.5f;
-                submerger.targetDepth = 1.0f;
+                isHeld = em.change_holding_bear(this.gameObject, true);
+                print(isHeld);
+                if(isHeld){
+                    onWhale = true;
+                    fallDelay = 15;
+                    stopDelay = 0;
+                    rigidBody.velocity = whaleCollider.attachedRigidbody.velocity;
+                    
+                    submerger.submergeTime = 0.5f;
+                    submerger.targetDepth = 1.0f;
+                }
             }
             else
             {
@@ -165,6 +176,7 @@ public class Bear : MonoBehaviour
 
         if (fallen)
         {
+            stopDelay = 0;
             //print(fallDelay);
             if (fallDelay == 15f)
             {
@@ -183,15 +195,22 @@ public class Bear : MonoBehaviour
         else if (fallDelay < 15f)
         {
             fallDelay += 5 * Time.deltaTime;
+            
+            submerger.submergeTime = 0.5f;
+            submerger.targetDepth = 1.0f;
+
             if (fallDelay > 15f)
             {
                 fallDelay = 15f;
             }
-        }/*
+        }
         else
         {
             fallDelay = 15f;
-        }*/
+            
+            submerger.submergeTime = 0.5f;
+            submerger.targetDepth = 1.0f;
+        }
 
         if (stopDelay > 0)
         {
@@ -208,9 +227,14 @@ public class Bear : MonoBehaviour
             submerger.targetDepth = 1.0f;
             if ( displacement < center*center ){
                 toCenter = false;
-            }         
+            }
             this.transform.Translate(speed*Time.deltaTime*(this.transform.parent.position - this.transform.position));
         }
         //bearRenderer.color = new Color(fallDelay / 15, fallDelay / 15, fallDelay / 15, fallDelay / 15);
+        print(isHeld);
+        if(!onWhale){            
+            print("off whale");
+            isHeld = em.change_holding_bear(this.gameObject, false);
+        }
     }
 }
