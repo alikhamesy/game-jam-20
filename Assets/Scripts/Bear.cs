@@ -115,6 +115,10 @@ public class Bear : MonoBehaviour
                 fallDelay = 10f;
             }
         }
+        else
+        {
+            fallDelay = 15;
+        }
 
         if (fallDelay < 0)
         {
