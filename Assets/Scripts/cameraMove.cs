@@ -4,32 +4,34 @@ using UnityEngine;
 
 public class cameraMove : MonoBehaviour
 {
-    public GameObject camera;
-    public float xbounds = 8f;
-    public float ybounds = 6f;
-    private Rigidbody2D _rb;
-    private Transform _t;
-    private Rigidbody2D _playerRB;
-    private float _xdif;
-    private float _ydif;
+    public Camera myCamera;
+    public float xBounds = 8f;
+    public float yBounds = 6f;
+
+    private Rigidbody2D cameraRigidBody;
+    private Rigidbody2D playerRigidBody;
+    private float xDif;
+    private float yDif;
     // Start is called before the first frame update
     void Start()
     {
-        _t = GetComponent<Transform>();
-        _rb = camera.GetComponent<Rigidbody2D>();
-        _playerRB = GetComponent<Rigidbody2D>();
+        cameraRigidBody = myCamera.GetComponent<Rigidbody2D>();
+        playerRigidBody = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        _xdif = _t.position.x - camera.transform.position.x;
-        _ydif = _t.position.y - camera.transform.position.y;
-        if((Mathf.Abs(_xdif) > xbounds && ((_xdif > 0 && _playerRB.velocity.x > 0) || (_xdif < 0 && _playerRB.velocity.x < 0)))
-          || (Mathf.Abs(_ydif) > ybounds && ((_ydif > 0 && _playerRB.velocity.y > 0) || (_ydif < 0 && _playerRB.velocity.y < 0)))){
-            _rb.velocity = _playerRB.velocity;
-        }else{
-            _rb.velocity = new Vector2(0f, 0f);
+        xDif = transform.position.x - myCamera.transform.position.x;
+        yDif = transform.position.y - myCamera.transform.position.y;
+        if ((Mathf.Abs(xDif) > xBounds && ((xDif > 0 && playerRigidBody.velocity.x > 0) || (xDif < 0 && playerRigidBody.velocity.x < 0)))
+          || (Mathf.Abs(yDif) > yBounds && ((yDif > 0 && playerRigidBody.velocity.y > 0) || (yDif < 0 && playerRigidBody.velocity.y < 0))))
+        {
+            cameraRigidBody.velocity = playerRigidBody.velocity;
+        }
+        else
+        {
+            cameraRigidBody.velocity = new Vector2(0f, 0f);
         }
     }
 }

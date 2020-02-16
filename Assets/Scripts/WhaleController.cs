@@ -9,6 +9,7 @@ public class WhaleController : MonoBehaviour
 
     private Rigidbody2D rigidBody;
     private SpriteRenderer spriteRenderer;
+    private CircleCollider2D collider;
 
     public bool isUnderwater = false;
 
@@ -36,7 +37,7 @@ public class WhaleController : MonoBehaviour
 
     void Start()
     {
-
+        collider = GetComponent<CircleCollider2D>();
         rigidBody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         maxSize = transform.localScale.x;
@@ -63,6 +64,7 @@ public class WhaleController : MonoBehaviour
             float size = Mathf.Max(minSize, transform.localScale.x * (1 - Time.deltaTime));
             transform.localScale = new Vector3(size, size, size);
 
+            collider.enabled = false;
         }
         else
         {
@@ -71,6 +73,8 @@ public class WhaleController : MonoBehaviour
 
             float size = Mathf.Min(maxSize, transform.localScale.x * (1 + Time.deltaTime));
             transform.localScale = new Vector3(size, size, size);
+
+            collider.enabled = true;
 
         }
 
