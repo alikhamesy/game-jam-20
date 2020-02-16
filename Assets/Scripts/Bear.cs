@@ -12,7 +12,9 @@ public class Bear : MonoBehaviour
     private float direction;
     private int speed;
     private float center;
-    private float fallen;
+    private bool fallen;
+    private float fallen_delay;
+    private SpriteRenderer bearRenderer;
 
     // Start is called before the first frame update
     void Start()
@@ -21,10 +23,12 @@ public class Bear : MonoBehaviour
         stop_delay = 0;
         direction = 0;
         speed = 2;
-        fallen = 10f;
+        fallen_delay = 10f;
         Event_Manager.Distraction += bear_distracted;
         Event_Manager.Tilt += bear_sliding;
         center = 0.75f;
+        fallen = false;
+        bearRenderer = GetComponent<SpriteRenderer>();
     }
 
     public void OnDestroy()
@@ -46,7 +50,7 @@ public class Bear : MonoBehaviour
     {
         //action_delay = 1.0f;
         //stop_delay = 0;
-        if (fallen!=10f) { return; }
+        if (fallen) { return; }
         float slide_dir = Mathf.Atan2(this.transform.position.y - y, this.transform.position.x - x) + Mathf.PI;
         this.transform.Translate(new Vector3(speed/4f * Time.deltaTime * Mathf.Cos(slide_dir), speed/2f * Time.deltaTime * Mathf.Sin(slide_dir)));
         //this.transform.Translate(new Vector3(x * Time.deltaTime, y * Time.deltaTime));
@@ -76,16 +80,30 @@ public class Bear : MonoBehaviour
 
         if (displacement > 2 * 2)
         {
+            fallen = true;
             stop_delay = 0;
             this.transform.Rotate(new Vector3(0, 0, 0.5f));
-            fallen -= Time.deltaTime;
         }
         else
         {
-            fallen = 10f;
+            fallen_delay = 10f;
+            fallen = false;
         }
 
-        if (fallen < 0)
+        if (fallen)
+        {
+            fallen_delay -= Time.deltaTime;
+        }
+        else if ( fallen_delay < 10f)
+        {
+            fallen_delay += 5 * Time.deltaTime;
+            if (fallen_delay > 10f)
+            {
+                fallen_delay = 10f;
+            }
+        }
+
+        if (fallen_delay < 0)
         {
             Destroy(this.gameObject);
         }
@@ -94,7 +112,8 @@ public class Bear : MonoBehaviour
         {
             this.transform.Translate(new Vector3(speed * Time.deltaTime * Mathf.Cos(direction), speed * Time.deltaTime * Mathf.Sin(direction)));
             stop_delay -= Time.deltaTime;
-
         }
+
+        bearRenderer.color = new Color(fallen_delay / 10, fallen_delay / 10, fallen_delay / 10, fallen_delay / 10);
     }
 }
