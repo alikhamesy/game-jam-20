@@ -59,11 +59,11 @@ public class Bear : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float displacement = (Mathf.Pow(this.transform.position.x - 0.06f, 2)/7.5f + Mathf.Pow(this.transform.position.y-0.40f, 2)/1.3f);
+        float displacement = (Mathf.Pow(this.transform.localPosition.x - 0.06f, 2)/7.5f + Mathf.Pow(this.transform.localPosition.y-10.0f, 2)/1.0f);
         action_delay -= Time.deltaTime;
         if (action_delay <= 0)
         {
-            float theta = Mathf.Atan2(this.transform.position.y, this.transform.position.x) + Mathf.PI;
+            float theta = Mathf.Atan2(this.transform.localPosition.y, this.transform.localPosition.x) + Mathf.PI;
             if (float.IsNaN(theta) || displacement < center*center) {
                 direction = Random.Range(0, 2 * Mathf.PI);
             }
@@ -77,19 +77,19 @@ public class Bear : MonoBehaviour
             speed = 2;
         }
 
-
-        if (displacement > 1.7)
+        print(displacement);
+        if (displacement > 550f || fallen )
         {
             fallen = true;
             this.transform.parent = null;
             stop_delay = 0;
             this.transform.Rotate(new Vector3(0, 0, 0.5f));
         }
-        else
+        /*else
         {
             fallen_delay = 10f;
             fallen = false;
-        }
+        }*/
 
         if (fallen)
         {
