@@ -10,13 +10,21 @@ public class Event_Manager : MonoBehaviour
     public static event BearHandler Tilt;
     private float timer;
 
-    void add_distraction()
+    public delegate void WhaleHandler(bool whale_state);
+    public static event WhaleHandler Underwater;
+
+    void add_distraction(float x, float y)
     {
         //print("Get distracted");
         if (Distraction != null) {
-            float x = Random.Range(0, 10);
-            float y = Random.Range(0, 10);
             Distraction(x, y);
+        }
+    }
+
+    public void change_whale_state(bool whale_state)
+    {
+        if (Underwater != null){
+            Underwater(whale_state);
         }
     }
     
@@ -30,7 +38,11 @@ public class Event_Manager : MonoBehaviour
     void Update()
     {
         timer -= Time.deltaTime;
-        if (timer <= 0 ) { add_distraction(); timer = 10.0f; }
+        if (timer <= 0 ) { 
+            float x = Random.Range(0, 10);
+            float y = Random.Range(0, 10);
+            add_distraction(x,y); 
+            timer = 10.0f; }
 
         if (Input.GetMouseButton(0))
         {

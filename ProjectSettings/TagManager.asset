@@ -44,9 +44,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: New Layer
-    uniqueID: 3289080051
-    locked: 0
   - name: Player
     uniqueID: 3869584341
+    locked: 0
+  - name: Bears
+    uniqueID: 3289080051
     locked: 0
