@@ -12,6 +12,8 @@ public class IceCollider : MonoBehaviour
         if(lives <= 0 || transform.childCount <= 0){
             SceneManager.LoadScene("Lose");
         }
+        Debug.Log(Screen.width);
+        Debug.Log(Screen.height);
     }
     
     public void bump(Vector2 velocity){

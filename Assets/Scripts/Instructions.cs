@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Instructions : MonoBehaviour
 {
-
+    public GameObject map;
     private bool s = false;
     private Color color;
     // Start is called before the first frame update
@@ -18,6 +18,7 @@ public class Instructions : MonoBehaviour
     {
         if(Input.anyKeyDown){
             s = true;
+            map.GetComponent<Canvas>().enabled = true;
         }
         if(s){
             color.a -= 1.5f * Time.deltaTime;

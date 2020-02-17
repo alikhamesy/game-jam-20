@@ -24,9 +24,6 @@ public class BoatCollider : MonoBehaviour
                 col.gameObject.GetComponent<IceCollider>().bump(velocity);
                 Destroy(gameObject);
                 break;
-            case "Player":
-                Destroy(gameObject);
-                break;
         }
     }
 
