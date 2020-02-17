@@ -55,7 +55,7 @@ public class Bear : MonoBehaviour
         submerger = GetComponent<Submerger>();
 
         sound = GetComponent<AudioSource>();
-        splash = GetComponent<ParticleSystem>();
+        // splash = GetComponent<ParticleSystem>();
 
     }
 
@@ -249,7 +249,6 @@ public class Bear : MonoBehaviour
             this.transform.Translate(speed * Time.deltaTime * (this.transform.parent.position - this.transform.position));
         }
         //bearRenderer.color = new Color(fallDelay / 5f, fallDelay / 5f, fallDelay / 5f, fallDelay / 5f);
-        splash.transform.position = transform.position;
-        splash.Play();
+
     }
 }
