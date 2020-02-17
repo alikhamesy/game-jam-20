@@ -5,12 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class IceCollider : MonoBehaviour
 {
+    public GameObject livesDisplay;
     private int lives = 5;
     
     void Update(){
         if(lives <= 0 || transform.childCount <= 0){
             SceneManager.LoadScene("Lose");
         }
+        Debug.Log(Screen.width);
+        Debug.Log(Screen.height);
     }
     
     public void bump(Vector2 velocity){
@@ -33,7 +36,7 @@ public class IceCollider : MonoBehaviour
                 SceneManager.LoadScene("Win");
                 break;
             case "Boat":
-                lives--;
+                livesDisplay.GetComponent<LivesTracker>().decrease(lives--);
                 gameObject.transform.localScale *= 0.9f;
                 break;
         }

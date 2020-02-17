@@ -28,7 +28,7 @@ public class deployShip : MonoBehaviour
     void Start()
     {
         StartCoroutine(asteroidWave());
-        Vector2 landStart = new Vector2(Mathf.Round(Random.value) == 1 ? 50f: -50f, Mathf.Round(Random.value) == 1 ? 50f: -50f);
+        Vector2 landStart = new Vector2(Mathf.Round(Random.value) == 1 ? 25f: -25f, Mathf.Round(Random.value) == 1 ? 25f: -25f);
         Instantiate(Land).transform.position = landStart;
     }
 
