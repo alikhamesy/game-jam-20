@@ -24,10 +24,12 @@ public class Bear : MonoBehaviour
     public float fallDelay;
     //private SpriteRenderer bearRenderer;
 
-    private CapsuleCollider2D bearCollider;    
+    private CapsuleCollider2D bearCollider;
     private Rigidbody2D rigidBody;
 
     public PolygonCollider2D iceCollider;
+
+    private AudioSource sound;
 
     void Start()
     {
@@ -51,7 +53,10 @@ public class Bear : MonoBehaviour
         //iceCollider = GetComponent<PolygonCollider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         submerger = GetComponent<Submerger>();
-        
+
+        sound = GetComponent<AudioSource>();
+        splash = GetComponent<ParticleSystem>();
+
     }
 
     public void OnDestroy()
@@ -88,12 +93,13 @@ public class Bear : MonoBehaviour
     void Update()
     {
 
-        float displacement = (Mathf.Pow(this.transform.localPosition.x, 2)/7.5f + Mathf.Pow(this.transform.localPosition.y, 2)/1.0f);
+        float displacement = (Mathf.Pow(this.transform.localPosition.x, 2) / 7.5f + Mathf.Pow(this.transform.localPosition.y, 2) / 1.0f);
         action_delay -= Time.deltaTime;
         if (action_delay <= 0)
         {
             float theta = Mathf.Atan2(this.transform.localPosition.y, this.transform.localPosition.x) + Mathf.PI;
-            if (float.IsNaN(theta) || displacement < center*center) {
+            if (float.IsNaN(theta) || displacement < center * center)
+            {
                 direction = Random.Range(0, 2 * Mathf.PI);
             }
             else
@@ -104,35 +110,42 @@ public class Bear : MonoBehaviour
             stopDelay = Random.Range(0.1f, 0.5f);
 
             speed = 2;
+
+            // meh
+            if (!fallen)
+            {
+                sound.Play();
+            }
         }
         //print(bearCollider.Distance(iceCollider).distance);
         //print(bearCollider.Distance(whaleCollider).distance);
 
         // if on ice
-        if ( bearCollider.Distance(iceCollider).distance < 0 )
+        if (bearCollider.Distance(iceCollider).distance < 0)
         {
             fallen = false;
-            fallDelay = 5f; 
+            fallDelay = 5f;
             rigidBody.velocity = iceCollider.attachedRigidbody.velocity;
             //this.transform.parent = iceCollider.transform.parent;
         }
         // if on whale
-        else if (bearCollider.Distance(whaleCollider).distance < 0 )
+        else if (bearCollider.Distance(whaleCollider).distance < 0)
         {
             fallen = true;
-            if( whaleUnderwater ){
+            if (whaleUnderwater)
+            {
                 canRescue = true;
                 onWhale = false;
                 submerger.submergeTime = fallDelay;
-                submerger.targetDepth = 0; 
+                submerger.targetDepth = 0;
             }
-            else if( !whaleUnderwater && canRescue )
+            else if (!whaleUnderwater && canRescue)
             {
                 onWhale = true;
                 fallDelay = 5f;
                 stopDelay = 0;
                 rigidBody.velocity = whaleCollider.attachedRigidbody.velocity;
-                
+
                 submerger.submergeTime = 0.5f;
                 submerger.targetDepth = 1.0f;
             }
@@ -170,8 +183,8 @@ public class Bear : MonoBehaviour
             //print(fallDelay);
             if (fallDelay == 5f)
             {
-                /*splash.transform.position = transform.position;
-                splash.Play();*/
+                splash.transform.position = transform.position;
+                splash.Play();
             }
             //print("subtract");
             fallDelay -= Time.deltaTime;
@@ -199,22 +212,28 @@ public class Bear : MonoBehaviour
         {
             this.transform.Translate(new Vector3(speed * Time.deltaTime * Mathf.Cos(direction), speed * Time.deltaTime * Mathf.Sin(direction)));
             stopDelay -= Time.deltaTime;
-            if(Mathf.Round(stopDelay*10f)/10f != 0 && Mathf.Cos(direction) != 0 ){
+            if (Mathf.Round(stopDelay * 10f) / 10f != 0 && Mathf.Cos(direction) != 0)
+            {
                 animator.SetFloat("Horizontal", Mathf.Cos(direction) < 0 ? -1 : 1);
                 animator.SetFloat("Speed", 1f);
-            }else{
+            }
+            else
+            {
                 animator.SetFloat("Speed", 0);
                 animator.SetFloat("Horizontal", 0);
             }
         }
 
 
-        if ( toCenter )
-        {   
-            if(Mathf.Round(stopDelay*10f)/10f != 0 && Mathf.Cos(direction) != 0 ){
+        if (toCenter)
+        {
+            if (Mathf.Round(stopDelay * 10f) / 10f != 0 && Mathf.Cos(direction) != 0)
+            {
                 animator.SetFloat("Horizontal", Mathf.Cos(direction) < 0 ? -1 : 1);
                 animator.SetFloat("Speed", 1f);
-            }else{
+            }
+            else
+            {
                 Debug.Log("test");
                 animator.SetFloat("Speed", 0);
                 animator.SetFloat("Horizontal", 0);
@@ -223,11 +242,14 @@ public class Bear : MonoBehaviour
             action_delay = 2f;
             submerger.submergeTime = 0.5f;
             submerger.targetDepth = 1.0f;
-            if ( displacement < center*center ){
+            if (displacement < center * center)
+            {
                 toCenter = false;
-            }         
-            this.transform.Translate(speed*Time.deltaTime*(this.transform.parent.position - this.transform.position));
+            }
+            this.transform.Translate(speed * Time.deltaTime * (this.transform.parent.position - this.transform.position));
         }
         //bearRenderer.color = new Color(fallDelay / 5f, fallDelay / 5f, fallDelay / 5f, fallDelay / 5f);
+        splash.transform.position = transform.position;
+        splash.Play();
     }
 }
